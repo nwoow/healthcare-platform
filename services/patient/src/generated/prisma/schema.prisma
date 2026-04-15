@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id               String    @id @default(uuid())
+  tenantId         String    @map("tenant_id")
+  mrn              String    @unique
+  name             String
+  dob              DateTime
+  gender           String
+  bloodGroup       String?   @map("blood_group")
+  contactPhone     String?   @map("contact_phone")
+  contactEmail     String?   @map("contact_email")
+  assignedDoctorId String?   @map("assigned_doctor_id")
+  isActive         Boolean   @default(true) @map("is_active")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  abhaNumber       String?   @unique @map("abha_number")
+  abhaAddress      String?   @map("abha_address")
+  abhaVerified     Boolean   @default(false) @map("abha_verified")
+  abhaLinkedAt     DateTime? @map("abha_linked_at")
+
+  @@map("patients")
+}

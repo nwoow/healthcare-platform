@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id         String                  @id @default(uuid())
+  name       String
+  subdomain  String                  @unique
+  plan       String                  @default("starter")
+  status     String                  @default("provisioning")
+  region     String                  @default("ap-south-1")
+  adminEmail String?                 @map("admin_email")
+  createdAt  DateTime                @default(now()) @map("created_at")
+  config     TenantConfig?
+  logs       TenantProvisioningLog[]
+
+  @@map("tenants")
+}
+
+model TenantConfig {
+  id              String  @id @default(uuid())
+  tenantId        String  @unique @map("tenant_id")
+  maxUsers        Int     @default(100) @map("max_users")
+  maxForms        Int     @default(50) @map("max_forms")
+  features        Json    @default("{}")
+  branding        Json    @default("{}")
+  ssoConfig       Json    @default("{}") @map("sso_config")
+  abdmEnabled     Boolean @default(false) @map("abdm_enabled")
+  abdmFacilityId  String? @map("abdm_facility_id")
+  abdmHipId       String? @map("abdm_hip_id")
+  abdmHiuId       String? @map("abdm_hiu_id")
+  abdmSandboxMode Boolean @default(true) @map("abdm_sandbox_mode")
+  tenant          Tenant  @relation(fields: [tenantId], references: [id])
+
+  @@map("tenant_configs")
+}
+
+model TenantProvisioningLog {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  step      String
+  status    String
+  error     String?
+  timestamp DateTime @default(now())
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+
+  @@map("tenant_provisioning_logs")
+}

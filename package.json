@@ -1,0 +1,19 @@
+{
+  "name": "healthcare-platform",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel -r run dev",
+    "build": "pnpm -r run build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@prisma/engines",
+      "@prisma/client",
+      "@scarf/scarf",
+      "bcrypt",
+      "prisma",
+      "unrs-resolver"
+    ]
+  }
+}
