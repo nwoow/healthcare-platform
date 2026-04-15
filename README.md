@@ -44,7 +44,31 @@ Each hospital is a **tenant** — complete data isolation via `tenant_id` column
 
 ## How to Start Everything
 
-### Step 1 — Start Docker infrastructure
+### Quickest way — one command
+
+```bash
+# From project root
+bash start.sh
+```
+
+This script:
+1. Starts all Docker containers (`docker compose up -d`)
+2. Waits for PostgreSQL and Kafka to be ready
+3. Starts all 8 backend services in the background (logs → `.logs/<service>.log`)
+4. Starts the Next.js frontend
+5. Prints a URL summary after ~20 s
+
+To stop everything:
+
+```bash
+bash stop.sh
+```
+
+---
+
+### Manual start — Step by step
+
+#### Step 1 — Start Docker infrastructure
 
 ```bash
 # From project root (healthcare-platform/)
@@ -72,7 +96,7 @@ You should see **8 containers** running:
 
 ---
 
-### Step 2 — Run Prisma migrations (first time only)
+#### Step 2 — Run Prisma migrations (first time only)
 
 Each NestJS service that uses PostgreSQL needs its database tables created:
 
@@ -82,12 +106,6 @@ cd services/auth && npx prisma migrate deploy && cd ../..
 
 # IAM service
 cd services/iam && npx prisma migrate deploy && cd ../..
-
-# Form Builder service
-cd services/form-builder && npx prisma migrate deploy && cd ../..
-
-# Submission service
-cd services/submission && npx prisma migrate deploy && cd ../..
 
 # Patient service
 cd services/patient && npx prisma migrate deploy && cd ../..
@@ -100,9 +118,9 @@ cd services/tenant && npx prisma migrate deploy && cd ../..
 
 ---
 
-### Step 3 — Start backend services
+#### Step 3 — Start backend services
 
-Open **9 separate terminals**, each from the project root:
+Open **8 separate terminals**, each from the project root:
 
 ```bash
 # Terminal 1 — Auth service (port 3001)
@@ -138,7 +156,7 @@ Wait for each to print:
 
 ---
 
-### Step 4 — Start the frontend
+#### Step 4 — Start the frontend
 
 ```bash
 # Terminal 9 — Next.js frontend (port 3000)
@@ -147,7 +165,7 @@ cd apps/frontend && npm run dev
 
 ---
 
-### Step 5 — Open the app
+#### Step 5 — Open the app
 
 ```
 http://localhost:3000
@@ -158,10 +176,11 @@ http://localhost:3000
 ## How to Stop Everything
 
 ```bash
-# Kill all Node processes (PowerShell)
-Get-Process node | Stop-Process -Force
+# Recommended — stops all services + Docker
+bash stop.sh
 
-# Stop Docker
+# Manual — PowerShell
+Get-Process node | Stop-Process -Force
 docker compose down
 ```
 
@@ -1065,12 +1084,34 @@ If ABHA is not linked, a **Link ABHA** button appears inline in the header.
 
 ## Scalability
 
-See **[SCALABILITY.md](./SCALABILITY.md)** for:
+### Cost model (self-hosted on AWS/GCP)
 
-- Multi-tenant cost model: Pilot ₹8k/month → Scale ₹2L/month
-- ABDM readiness matrix (M1 built, M2/M3 need NHA registration)
-- Redis cache ROI: 0.3ms cache hit vs 5ms DB query, 60% load reduction
-- Kafka partition strategy
+| Tier | Hospitals | Monthly infra cost |
+|------|-----------|--------------------|
+| Pilot | 1–5 | ~₹8,000 |
+| Growth | 6–20 | ~₹40,000 |
+| Scale | 21–100 | ~₹2,00,000 |
+
+### ABDM readiness
+
+| Milestone | Status |
+|-----------|--------|
+| M1 — ABHA capture + FHIR R4 + Consent | Built (sandbox-ready) |
+| M2 — HIE-CM integration | Needs NHA `client_id` / `secret` |
+| M3 — Gateway subscription | Needs NHA registration |
+
+### Redis cache ROI
+
+- Cache hit: **0.3 ms** vs DB query: **5 ms** → 16× faster
+- Estimated **60% reduction** in PostgreSQL load for IAM lookups
+- TTL: 60 seconds — `FLUSHALL` or `iam.policy.updated` Kafka event invalidates immediately
+
+### Kafka partition strategy
+
+All producers use `tenantId` as the partition key. This guarantees:
+- Message ordering within a tenant
+- Linear horizontal scaling — add partitions as tenant count grows
+- Integration service consumers fan out per-event-type without cross-tenant interference
 
 ---
 
