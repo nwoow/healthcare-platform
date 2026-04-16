@@ -1,13 +1,10 @@
-# Healthcare Platform — Complete Demo Guide
-**VM IP:** 35.200.238.175  
-**GitHub:** https://github.com/nwoow/healthcare-platform  
-**Date:** April 16, 2026
-
+Healthcare Platform — Complete Demo Guide
+VM IP: 35.200.238.175  
+GitHub: https://github.com/nwoow/healthcare-platform  
+Date: April 16, 2026
 ---
-
-## 1. ALL CREDENTIALS
-
-### Super Admin (Platform Level)
+1. ALL CREDENTIALS
+Super Admin (Platform Level)
 ```
 Login URL:  http://35.200.238.175:3000/super-admin/login
 Email:      superadmin@platform.com
@@ -15,8 +12,7 @@ Password:   SuperAdmin@123
 Role:       super_admin
 TenantID:   PLATFORM
 ```
-
-### Tenant Admins (Hospital Level)
+Tenant Admins (Hospital Level)
 ```
 Login URL:  http://35.200.238.175:3000/login
 
@@ -45,20 +41,16 @@ Narayana Health
   Password:   NarayanaAdmin2660!
   TenantID:   63246526-1b3b-4cd0-a9e9-665534d7e594
 ```
-
-### Default Seeded User (Always Works)
+Default Seeded User (Always Works)
 ```
 Login URL:  http://35.200.238.175:3000/login
 Email:      admin@hospital.com
 Password:   Admin@123
 Role:       tenant_admin
 ```
-
 ---
-
-## 2. ALL SERVICE URLs
-
-### Frontend
+2. ALL SERVICE URLs
+Frontend
 ```
 Main Login:       http://35.200.238.175:3000/login
 Super Admin:      http://35.200.238.175:3000/super-admin/login
@@ -70,8 +62,7 @@ Integrations:     http://35.200.238.175:3000/admin/integrations
 Analytics:        http://35.200.238.175:3000/admin/analytics
 Clinician:        http://35.200.238.175:3000/clinician/dashboard
 ```
-
-### API Swagger Docs
+API Swagger Docs
 ```
 Auth Service:         http://35.200.238.175:3001/api/docs
 IAM Service:          http://35.200.238.175:3002/api/docs
@@ -82,86 +73,122 @@ Audit Service:        http://35.200.238.175:3008/api/docs
 Integration Service:  http://35.200.238.175:3009/api/docs
 Tenant Service:       http://35.200.238.175:3010/api/docs
 ```
-
-### Database & Infrastructure UIs
+Database & Infrastructure UIs
 ```
 Kafka UI:      http://35.200.238.175:8083        (no login)
 Mongo Express: http://35.200.238.175:8081        (admin / admin123)
 pgAdmin:       http://35.200.238.175:8082        (admin@healthcare.com / admin123)
 ```
-
 ---
-
-## 3. DEMO FLOW FOR AMIT (15 Minutes)
-
-### Step 1 — Super Admin Portal (3 min)
-1. Open http://35.200.238.175:3000/super-admin/login
-2. Login: superadmin@platform.com / SuperAdmin@123
-3. Show platform dashboard — 5 hospitals registered
-4. Click Apollo Hospital → show 6-tab detail
-5. Show ABDM compliance tab — abdmEnabled, facilityId fields
-6. Show provisioning logs — 6 steps completed automatically
-
-### Step 2 — Tenant Admin (5 min)
-1. Open new tab: http://35.200.238.175:3000/login
-2. Login: admin@apollo.com / ApolloAdmin5255!
-3. Show admin dashboard — stats cards
-4. Go to Form Builder → drag fields → create form → publish
-5. Go to Patients → register new patient with ABHA number
-6. Go to Analytics → show 3 tabs (Submissions, Patients, Compliance)
-7. Go to Integrations → show webhook integration setup
-
-### Step 3 — Live API Demo (3 min)
-1. Open http://35.200.238.175:3001/api/docs
-2. Expand POST /auth/login → Execute with Apollo credentials → Show JWT cookie
-3. Open http://35.200.238.175:3010/api/docs
-4. Show POST /tenants/onboard → explain 6 provisioning steps
-5. Open http://35.200.238.175:3006/api/docs
-6. Show GET /patients/:id/fhir → FHIR R4 output
-
-### Step 4 — Infrastructure (2 min)
-1. Open http://35.200.238.175:8083 — Kafka UI
-2. Show 9 topics with live message counts
-3. Open http://35.200.238.175:8082 — pgAdmin
-4. Show tenants table, users table, audit_logs table
-5. Open http://35.200.238.175:8081 — Mongo Express
-6. Show form_schemas and form_submissions collections
-
-### Step 5 — Load Test Results (2 min)
-1. Show load-test-report.html
-2. Key points:
-   - 202,907 requests processed at 3000 VUs
-   - IAM evaluate: p95 = 5ms (Redis cache)
-   - Form fetch: p95 = 7ms (MongoDB)
-   - Bottleneck identified: auth refresh token bug (fixed)
-   - Architecture is proven — bottleneck was code not design
-
+3. DEMO FLOW FOR AMIT (15 Minutes)
+Step 1 — Super Admin Portal (3 min)
+Open http://35.200.238.175:3000/super-admin/login
+Login: superadmin@platform.com / SuperAdmin@123
+Show platform dashboard — 5 hospitals registered
+Click Apollo Hospital → show 6-tab detail
+Show ABDM compliance tab — abdmEnabled, facilityId fields
+Show provisioning logs — 6 steps completed automatically
+Step 2 — Tenant Admin (5 min)
+Open new tab: http://35.200.238.175:3000/login
+Login: admin@apollo.com / ApolloAdmin5255!
+Show admin dashboard — stats cards
+Go to Form Builder → drag fields → create form → publish
+Go to Patients → register new patient with ABHA number
+Go to Analytics → show 3 tabs (Submissions, Patients, Compliance)
+Go to Integrations → show webhook integration setup
+Step 3 — Live API Demo (3 min)
+Open http://35.200.238.175:3001/api/docs
+Expand POST /auth/login → Execute with Apollo credentials → Show JWT cookie
+Open http://35.200.238.175:3010/api/docs
+Show POST /tenants/onboard → explain 6 provisioning steps
+Open http://35.200.238.175:3006/api/docs
+Show GET /patients/:id/fhir → FHIR R4 output
+Step 4 — Infrastructure (2 min)
+Open http://35.200.238.175:8083 — Kafka UI
+Show 9 topics with live message counts
+Open http://35.200.238.175:8082 — pgAdmin
+Show tenants table, users table, audit_logs table
+Open http://35.200.238.175:8081 — Mongo Express
+Show form_schemas and form_submissions collections
+Step 5 — Load Test Results (2 min)
+Show load-test-report.html
+Key points:
+202,907 requests processed at 3000 VUs
+IAM evaluate: p95 = 5ms (Redis cache)
+Form fetch: p95 = 7ms (MongoDB)
+Bottleneck identified: auth refresh token bug (fixed)
+Architecture is proven — bottleneck was code not design
 ---
-
-## 4. RUN FULL LOAD TEST AGAIN
-
-### Pre-Test Setup (Run on VM)
+4. RUN FULL LOAD TEST AGAIN
+Step 0 — Upload Scripts to VM (Run on LOCAL machine first)
 ```bash
-# SSH into VM
+# Upload seed and load test scripts from your laptop to the VM
+gcloud compute scp seed-complete.js \
+  healthcare-loadtest:~/healthcare-platform/GCP/ \
+  --zone=asia-south1-b
+
+gcloud compute scp load-test-realistic.js \
+  healthcare-loadtest:~/healthcare-platform/GCP/ \
+  --zone=asia-south1-b
+
+echo "Scripts uploaded — now SSH into VM"
+```
+Step 1 — SSH Into VM
+```bash
 gcloud compute ssh healthcare-loadtest --zone=asia-south1-b
+cd ~/healthcare-platform/GCP
 
-# Step 1 — Clear refresh tokens (prevents duplicate token bug)
-sudo docker exec -i healthcare-platform-postgres-1 psql \
-  -U healthcare -d healthcare_platform \
-  -c "DELETE FROM refresh_tokens;"
+# Make sure axios is installed
+npm install axios 2>/dev/null || true
+```
+Step 2 — Seed All Data (takes ~10 minutes)
+```bash
+node seed-complete.js 2>&1 | tee seed-output.txt
+```
+This creates: 5 tenants, 300 users (150 doctors + 100 nurses), 25 forms, 50 patients, 25 submissions
+Step 3 — Run Realistic Load Test (takes ~20 minutes)
+```bash
+k6 run --out json=results.json load-test-realistic.js 2>&1 | tee load-test-output.txt
+```
+300 VUs — one per real user. Doctors fill forms, nurses do assessments, admins approve.
+Step 4 — Download Results to Laptop (Run on LOCAL machine)
+```bash
+# Download text summary
+gcloud compute scp \
+  healthcare-loadtest:~/healthcare-platform/GCP/load-test-summary.txt \
+  ./load-test-summary.txt \
+  --zone=asia-south1-b
 
-# Step 2 — Verify all services are up
+# Download HTML report
+gcloud compute scp \
+  healthcare-loadtest:~/healthcare-platform/GCP/load-test-report.html \
+  ./load-test-report.html \
+  --zone=asia-south1-b
+
+# Download seed output to confirm data created
+gcloud compute scp \
+  healthcare-loadtest:~/healthcare-platform/GCP/seed-output.txt \
+  ./seed-output.txt \
+  --zone=asia-south1-b
+
+echo "Open load-test-report.html in browser"
+```
+Pre-Test Setup (Run on VM)
+Step 1 — Clear refresh tokens (prevents duplicate token bug)
+sudo docker exec -i healthcare-platform-postgres-1 psql   
+-U healthcare -d healthcare_platform   
+-c "DELETE FROM refresh_tokens;"
+Step 2 — Verify all services are up
 for port in 3001 3002 3003 3004 3006 3008 3009 3010; do
-  CODE=$(curl -s -o /dev/null -w "%{http_code}" \
-    http://localhost:$port/api/docs --max-time 5)
-  echo "Port $port: HTTP $CODE"
+CODE=$(curl -s -o /dev/null -w "%{http_code}"   
+http://localhost:$port/api/docs --max-time 5)
+echo "Port $port: HTTP $CODE"
 done
-
-# Step 3 — Verify login works
-curl -s -X POST http://localhost:3001/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"admin@apollo.com","password":"ApolloAdmin5255!"}' \
-  | python3 -m json.tool
+Step 3 — Verify login works
+curl -s -X POST http://localhost:3001/auth/login   
+-H "Content-Type: application/json"   
+-d '{"email":"admin@apollo.com","password":"ApolloAdmin5255!"}'   
+| python3 -m json.tool
 ```
 
 ### Run Full 3000 VU Test
@@ -174,14 +201,12 @@ ls -la tenants.json users.json forms.json
 # Run full test (25 minutes)
 k6 run --out json=results.json load-test.js 2>&1 | tee load-test-output.txt
 ```
-
-### Run Quick 100 VU Test (5 minutes — for clean results)
+Run Quick 100 VU Test (5 minutes — for clean results)
 ```bash
 cd ~/healthcare-platform/GCP
 k6 run --out json=results.json quick-test.js 2>&1 | tee quick-test-output.txt
 ```
-
-### Generate HTML Report
+Generate HTML Report
 ```bash
 cd ~/healthcare-platform/GCP
 
@@ -298,8 +323,7 @@ process.stdin.on('end', () => {
 });
 " < results.json
 ```
-
-### Download Report to Your Laptop
+Download Report to Your Laptop
 ```bash
 # Run on LOCAL machine
 gcloud compute scp \
@@ -309,11 +333,8 @@ gcloud compute scp \
 
 echo "Open load-test-report.html in your browser"
 ```
-
 ---
-
-## 5. BEFORE THE MEETING — CHECKLIST
-
+5. BEFORE THE MEETING — CHECKLIST
 ```
 □ SSH into VM: gcloud compute ssh healthcare-loadtest --zone=asia-south1-b
 □ Check all services: pm2 status (all should show online)
@@ -323,23 +344,15 @@ echo "Open load-test-report.html in your browser"
 □ Have load-test-report.html open in browser
 □ Have PLAN.md open to walk through architecture
 ```
-
 ---
-
-## 6. KEY TALKING POINTS FOR AMIT
-
-**On the 93% error rate in first test:**
+6. KEY TALKING POINTS FOR AMIT
+On the 93% error rate in first test:
 > "The load test found a specific bug — the refresh token table throws a unique constraint when 300 VUs log in as the same user simultaneously. This is a 2-line fix: delete existing token before creating new. The test did exactly what it was supposed to do — find the bottleneck. The architecture underneath — IAM at 5ms, MongoDB at 7ms, Kafka processing — all performed excellently."
-
-**On scalability:**
+On scalability:
 > "PostgreSQL handles this scale with tenantId isolation. The connection ceiling is solved by PgBouncer — a 30-minute configuration change that triples capacity. Read replicas handle the next tier. Sharding handles enterprise scale. These are well-understood solutions at each step."
-
-**On ABDM:**
+On ABDM:
 > "M1 is fully built — ABHA number capture, FHIR R4 conversion, consent management. M2 and M3 activate with NHA sandbox registration. The data models and consent flows are in place. Certification is a process, not a rebuild."
-
-**On Kubernetes:**
+On Kubernetes:
 > "The architecture is Kubernetes-ready. Every service is a stateless NestJS container. Adding K8s is a deployment decision — the code does not change. HPA on IAM and Submission services handles traffic spikes automatically."
-
 ---
-
-*Healthcare Platform · github.com/nwoow/healthcare-platform*
+Healthcare Platform · github.com/nwoow/healthcare-platform
