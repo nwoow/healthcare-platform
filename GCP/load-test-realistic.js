@@ -335,4 +335,3 @@ export function handleSummary(data) {
     stdout: summary,
   };
 }
-// Demo
